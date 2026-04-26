@@ -1,0 +1,27 @@
+.env
+.env.local
+.env.*.local
+node_modules/
+dataScraper/.env
+*.log
+fetch_log.txt
+ingest_log.txt
+ingest_parcels_log.txt
+fetch_progress.json
+# Local copy of app_user.template.sql with real password (never commit)
+database/app_user.local.sql
+
+# dataScraper — large / generated outputs (NLA fetch, PTS, name/owner helpers, chunk splits)
+dataScraper/land_val_numbers.json
+dataScraper/land_val_numbers.json.legacy_backup
+dataScraper/land_valuation_numbers.json
+dataScraper/land-valuation-numbers.json
+dataScraper/*-land-valuation.json
+dataScraper/property_info.json
+dataScraper/evals.json
+dataScraper/used-evals.txt
+dataScraper/names.txt
+dataScraper/owner-info.txt
+dataScraper/owner_names.csv
+# Regenerate with: cd dataScraper && npm install
+dataScraper/package-lock.json

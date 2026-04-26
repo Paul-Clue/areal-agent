@@ -1,0 +1,292 @@
+Scan all of the files in this project to get context. DO NOT scan the following files:
+land_valuation_numbers.json, evals.json, property_info.json.
+
+The files that I mentioned above are too big and would overload your context window. The following are small parts of each file copied from the very top. The small parts are representative of the entire file:
+
+File: land_valuation_numbers
+  {
+    "objectId": 2,
+    "lvNumber": "13004014089",
+    "volFol": "1559/614",
+    "streetAdd": " ",
+    "schemeAdd": "BURTONS",
+    "parish": "ST. CATHERINE",
+    "location": "LINSTEAD P O"
+  },
+  {
+    "objectId": 3,
+    "lvNumber": "12906018019",
+    "volFol": "1314/244",
+    "streetAdd": " ",
+    "schemeAdd": "18 SUNNYSIDE L/S",
+    "parish": "ST. CATHERINE",
+    "location": "BOG WALK P O"
+  },
+  {
+    "objectId": 4,
+    "lvNumber": "13004014067",
+    "volFol": " ",
+    "streetAdd": " ",
+    "schemeAdd": "BURTONS",
+    "parish": "ST. CATHERINE",
+    "location": "LINSTEAD P O"
+  },
+  {
+    "objectId": 5,
+    "lvNumber": "12906018025",
+    "volFol": "1342/12",
+    "streetAdd": " ",
+    "schemeAdd": "55 SUNNYSIDE L/S",
+    "parish": "ST. CATHERINE",
+    "location": "LINSTEAD P O"
+  },
+  {
+    "objectId": 6,
+    "lvNumber": "13004014027",
+    "volFol": " ",
+    "streetAdd": " ",
+    "schemeAdd": "BERWICK",
+    "parish": "ST. CATHERINE",
+    "location": "BOG WALK P O"
+  },
+  {
+    "objectId": 7,
+    "lvNumber": "12903007002",
+    "volFol": " ",
+    "streetAdd": " ",
+    "schemeAdd": "BURTONS",
+    "parish": "ST. CATHERINE",
+    "location": "LINSTEAD P O"
+  },
+  {
+    "objectId": 12,
+    "lvNumber": "21506011117",
+    "volFol": "1475/608",
+    "streetAdd": "PAUL BOGLE CRESCENT",
+    "schemeAdd": "198 SUMMIT GARDENS",
+    "parish": "ST. THOMAS",
+    "location": "MORANT BAY P O"
+  },
+  {
+    "objectId": 13,
+    "lvNumber": "21506011118",
+    "volFol": "1367/870",
+    "streetAdd": "PAUL BOGLE CRESCENT",
+    "schemeAdd": "199 SUMMIT GARDENS",
+    "parish": "ST. THOMAS",
+    "location": "MORANT BAY P O"
+  },
+  {
+    "objectId": 14,
+    "lvNumber": "106A1W08116",
+    "volFol": "1366/779",
+    "streetAdd": " ",
+    "schemeAdd": "93 OAK GLADES",
+    "parish": "ST. ANDREW",
+    "location": "KINGSTON 10"
+  },
+  {
+    "objectId": 15,
+    "lvNumber": "18603033032",
+    "volFol": "1369/251",
+    "streetAdd": " ",
+    "schemeAdd": "142 HAVANA HEIGHTS",
+    "parish": "CLARENDON",
+    "location": "DENBIGH P O"
+  },
+  {
+    "objectId": 16,
+    "lvNumber": "18603033014",
+    "volFol": "1369/233",
+    "streetAdd": " ",
+    "schemeAdd": "126 HAVANA HEIGHTS",
+    "parish": "CLARENDON",
+    "location": "DENBIGH P O"
+  },
+
+File: evals.json:
+[
+  "13004014089",
+  "12906018019",
+  "13004014067",
+  "12906018025",
+  "13004014027",
+  "12903007002",
+  "21506011117",
+  "21506011118",
+  "106A1W08116",
+  "18603033032",
+  "18603033014",
+  "18305004016",
+  "13803008028",
+  "13803008020",
+  "094D6Z11079",
+  "18603032123",
+  "18603032126",
+  "10106010029",
+  "21604010026",
+  "21604010055",
+  "20701009003",
+  "14506005059",
+  "14204012009",
+  "18603033003",
+  "01103016118",
+  "18305004019",
+  "13803008014",
+  "05106004071",
+  "13803008",
+  "13004014078",
+  "13004014041",
+  "13004014051",
+  "12906018026",
+  "13004014031",
+  "12906018012",
+  "13001008051",
+  "031B6X02---",
+  "21506011121",
+  "21506011147",
+  "21506011141",
+  "18806023018",
+  "07706015118",
+  "18305004018",
+  "10305008067",
+  "01103009084",
+  "21604010034",
+  "21604010040",
+  "105C4Z04005",
+  "18305004088",
+  "0930602681",
+  "13803008035",
+  "105C4Z04010",
+  "12501010063",
+  "14204012097",
+  "12906018018",
+  "13004014042",
+  "12906018008",
+  "13001008052",
+  "13001008031",
+  "12903007009",
+  "031B6X02277",
+  "21506004009",
+  "21506011120",
+  "21506011140",
+  "106A1W08075",
+  "10305008078",
+  "03103023368",
+  "18603032095",
+  "18603033051",
+  "21604010215",
+  "21604010013",
+  "23501009144",
+  "14404016",
+  "13803008042",
+  "14303003115",
+  "14204014035",
+  "03103023367",
+  "10901003076",
+  "105C4Z05003",
+  "13004014068",
+  "13004014065",
+  "13004014036",
+  "12903007006",
+  "12903007004",
+  "21506011154",
+  "03306011167",
+  "03306011123",
+  "106A1W08111",
+  "106A1W08121",
+
+File: property_info.json:
+[
+  {
+    "propertyInfo": {
+      "Valuation No.": "13004014089",
+      "Strata Lot No.": "",
+      "Owner Name": "BARRINGTON DAVIDSON",
+      "Property Address": "BURTONS\nLINSTEAD P O",
+      "Value of Land": "$3,700,000.00"
+    }
+  },
+  {
+    "propertyInfo": {
+      "Valuation No.": "12906018019",
+      "Strata Lot No.": "",
+      "Owner Name": "DONOVAN JACKSON ET AL",
+      "Property Address": "LOT/APT 18 SUNNYSIDE L/S\nBOG WALK P O",
+      "Value of Land": "$1,800,000.00"
+    }
+  },
+  {
+    "propertyInfo": {
+      "Valuation No.": "13004014067",
+      "Strata Lot No.": "",
+      "Owner Name": "CORNELIUS BULLOCK",
+      "Property Address": "BURTONS\nLINSTEAD P O",
+      "Value of Land": "$800,000.00"
+    }
+  },
+  {
+    "propertyInfo": {
+      "Valuation No.": "13004014089",
+      "Strata Lot No.": "",
+      "Owner Name": "BARRINGTON DAVIDSON",
+      "Property Address": "BURTONS\nLINSTEAD P O",
+      "Value of Land": "$3,700,000.00"
+    }
+  },
+  {
+    "propertyInfo": {
+      "Valuation No.": "13004014089",
+      "Strata Lot No.": "",
+      "Owner Name": "BARRINGTON DAVIDSON",
+      "Property Address": "BURTONS\nLINSTEAD P O",
+      "Value of Land": "$3,700,000.00"
+    }
+  },
+  {
+    "propertyInfo": {
+      "Valuation No.": "12906018019",
+      "Strata Lot No.": "",
+      "Owner Name": "DONOVAN JACKSON ET AL",
+      "Property Address": "LOT/APT 18 SUNNYSIDE L/S\nBOG WALK P O",
+      "Value of Land": "$1,800,000.00"
+    }
+  },
+  {
+    "propertyInfo": {
+      "Valuation No.": "13004014089",
+      "Strata Lot No.": "",
+      "Owner Name": "BARRINGTON DAVIDSON",
+      "Property Address": "BURTONS\nLINSTEAD P O",
+      "Value of Land": "$3,700,000.00"
+    }
+  },
+  {
+    "propertyInfo": {
+      "Valuation No.": "12906018019",
+      "Strata Lot No.": "",
+      "Owner Name": "DONOVAN JACKSON ET AL",
+      "Property Address": "LOT/APT 18 SUNNYSIDE L/S\nBOG WALK P O",
+      "Value of Land": "$1,800,000.00"
+    }
+  },
+  {
+    "propertyInfo": {
+      "Valuation No.": "13004014067",
+      "Strata Lot No.": "",
+      "Owner Name": "CORNELIUS BULLOCK",
+      "Property Address": "BURTONS\nLINSTEAD P O",
+      "Value of Land": "$800,000.00"
+    }
+  },
+  {
+    "propertyInfo": {
+      "Valuation No.": "13004014089",
+      "Strata Lot No.": "",
+      "Owner Name": "BARRINGTON DAVIDSON",
+      "Property Address": "BURTONS\nLINSTEAD P O",
+      "Value of Land": "$3,700,000.00"
+    }
+  },
+
+  Create sub-agents to help scan the project and create a comprehensive ProjectSummary.md file in the docs directory. The comprehensive ProjectSummary.md file should be a living document. It will be used to give full context of the project to agents in subsequent chat/coding sessions.
