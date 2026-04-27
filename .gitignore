@@ -10,6 +10,7 @@ ingest_parcels_log.txt
 fetch_progress.json
 # Local copy of app_user.template.sql with real password (never commit)
 database/app_user.local.sql
+testLVs.txt
 
 # dataScraper — large / generated outputs (NLA fetch, PTS, name/owner helpers, chunk splits)
 dataScraper/land_val_numbers.json

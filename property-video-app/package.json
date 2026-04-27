@@ -1,0 +1,44 @@
+{
+  "name": "property-video-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "worker": "tsx src/worker/index.ts"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.1037.0",
+    "@clerk/nextjs": "^7.2.7",
+    "@mapbox/mapbox-gl-draw": "^1.5.1",
+    "@mapbox/sphericalmercator": "^2.0.2",
+    "bullmq": "^5.76.2",
+    "dotenv": "^17.4.2",
+    "ioredis": "^5.10.1",
+    "mapbox-gl": "^3.22.0",
+    "next": "16.2.4",
+    "p-limit": "^7.3.0",
+    "pg": "^8.20.0",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "react-map-gl": "^8.1.1",
+    "sharp": "^0.34.5",
+    "swr": "^2.4.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/geojson": "^7946.0.16",
+    "@types/mapbox__mapbox-gl-draw": "^1.4.9",
+    "@types/node": "^20",
+    "@types/pg": "^8.20.0",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.4",
+    "tailwindcss": "^4",
+    "tsx": "^4.21.0",
+    "typescript": "^5"
+  }
+}

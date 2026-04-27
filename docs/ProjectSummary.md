@@ -1,6 +1,6 @@
 # Project summary (living document)
 
-**Last updated:** 2026-04-25  
+**Last updated:** 2026-04-27
 
 This file is the **primary onboarding document** for agents working in parallel or new sessions. Read it before large changes. It describes the **areal-agent** repo: product intent, what is implemented on disk, what still lives only in plans, and operational gotchas.
 
@@ -8,7 +8,7 @@ This file is the **primary onboarding document** for agents working in parallel 
 
 ## One-paragraph snapshot
 
-**areal-agent** supports a planned **Jamaica NLA–based property video SaaS** (see `planv5.md`). The **Next.js app, workers, Stripe, Clerk, etc. are not in this repository.** What *is* here: (1) long-form specs under `docs/`; (2) a **Node/Puppeteer data pipeline** under `dataScraper/` (NLA GIS fetch, optional tax-site scrape, validation, Postgres ingest **and parcel ingest**); (3) **SQL and role templates** under `database/` from `databasePlanv2.md` Phase 0 **plus** `databaseUpdate.md` (one-to-many parcels, `property_parcels`). A **production Postgres database is not created or guaranteed by the repo alone**—operators create a cluster, apply SQL, set secrets, and run scripts.
+**areal-agent** supports a planned **Jamaica NLA–based property video SaaS** (see `planv5.md` / **`planv6.md`** for the current app build). The **Next.js app** now lives in-repo as **`property-video-app/`** (partial **`planv6.md`** implementation: DB client, property/parcel APIs, Clerk, generate UI with map + multi-parcel modal, **map framing via `ST_PointOnSurface`**, and **drag-to-move / vertex reshape** on the parcel polygon — **not** the full worker, FFmpeg, BullMQ, Stripe, or Spaces pipeline). **Workers, production deployment, billing, and hosted Redis/Spaces** are still plan-only or environment-specific. What *is* here: (1) long-form specs under `docs/`; (2) a **Node/Puppeteer data pipeline** under `dataScraper/` (NLA GIS fetch, optional tax-site scrape, validation, Postgres ingest **and parcel ingest**); (3) **SQL and role templates** under `database/` from `databasePlanv2.md` Phase 0 **plus** `databaseUpdate.md` (one-to-many parcels, `property_parcels`); (4) **`property-video-app/`** — Next.js 16 app per `planv6.md` Step 0+ (see **Application — `planv6` progress** below). A **production Postgres database is not created or guaranteed by the repo alone**—operators create a cluster, apply SQL, set secrets, and run scripts.
 
 ---
 
@@ -18,7 +18,7 @@ This file is the **primary onboarding document** for agents working in parallel 
 - Backend: **PostgreSQL + PostGIS** with parcel geometry (when present).
 - Video: **Mapbox** (default) and optionally **Cesium + Google 3D Tiles** when coverage exists.
 - Output: **branded synthetic** aerial-style video (not real drone footage), with boundaries and post-processing per plan.
-- **Auth / billing / deployment** are specified in `planv5.md`, not implemented here.
+- **Auth / billing / deployment** are specified in `planv5.md` / `planv6.md`. **Clerk** is wired in **`property-video-app`**; **Stripe, production deploy, worker droplet, Redis, Spaces** remain to be implemented per plan.
 
 ---
 
@@ -26,10 +26,11 @@ This file is the **primary onboarding document** for agents working in parallel 
 
 | In this repo | Not in this repo (see plans) |
 |----------------|-------------------------------|
-| `docs/*.md` plans and `prompts.txt` | Running Next.js frontend/API |
-| `database/*.sql` schema + hardening templates | Hosted DB cluster (DigitalOcean, etc.) unless you create it |
-| `dataScraper` fetch / validate / ingest scripts | Vercel deployment, worker droplet, Redis, Spaces |
-| `.gitignore`, `dataScraper/.env.example` | Committed `.env` with real passwords |
+| `docs/*.md` plans and `prompts.txt` | Hosted **production** DB (unless you provision it) |
+| `database/*.sql` schema + hardening templates | Full **video worker** pipeline (FFmpeg, frame gen, upload) as a separate long-running service — **specified in `planv6.md`, not fully built** |
+| `dataScraper` fetch / validate / ingest scripts | Vercel deployment, managed Redis, DO Spaces (unless configured) |
+| **`property-video-app/`** — Next.js app (`npm install` / `npm run dev` **in that folder**) | Committed `.env` / `.env.local` with real secrets |
+| `.gitignore`, `dataScraper/.env.example`, `property-video-app/.env.local.example` | — |
 
 ---
 
@@ -37,13 +38,39 @@ This file is the **primary onboarding document** for agents working in parallel 
 
 | Path | Role |
 |------|------|
-| `docs/` | Product plan (`planv5.md`), Phase 0 DB plan (`databasePlanv2.md`), **DB update v1** (`databaseUpdate.md`), older plans, `prompts.txt`, **this file** |
+| `docs/` | Product plans (`planv5.md`, **`planv6.md`**), Phase 0 DB plan (`databasePlanv2.md`), **DB update v1** (`databaseUpdate.md`), older plans, `prompts.txt`, **this file** |
 | `database/` | Executable SQL: `schema.sql`, **parcel update** (`update_property_parcels_v1.sql`, `update_property_parcels_step6.sql`, `grants_property_parcels_app_user.sql`, `verify_property_parcels_v1.sql`), RLS, **`app_user.template.sql`**, `app_user.local.sql` (gitignored — password; run before parcel grants), pool limit, optional tuning |
-| `reference/databaseUpdate-step8/` | Copy-paste **Next.js** snippets for multi-parcel lookup (app not in this repo) |
+| `reference/databaseUpdate-step8/` | Original **Next.js** snippets for Step 8 — logic is **merged into** `property-video-app/src/lib/property.ts` and related routes/components (keep in sync when changing lookup behavior) |
+| `property-video-app/` | Next.js **16** app: `planv6.md` **Step 0** (create-next-app) plus Phases **1–3**-style pieces (see **Application — `planv6` progress**). Has its own `package.json` — **not** at repo root. |
 | `dataScraper/` | Node project: NLA fetch, JSON validation, Postgres ingest, legacy/auxiliary scripts |
-| `.gitignore` | Ignores `.env`, logs, `fetch_progress.json`, `node_modules/`, **`database/app_user.local.sql`** |
+| `.gitignore` | Ignores `.env`, logs, `fetch_progress.json`, `node_modules/`, **`database/app_user.local.sql`**, `.env.local` |
 
-There is **no** root `package.json`; install and run **from `dataScraper/`**.
+There is **no** root `package.json`. Use **`cd dataScraper`** for the pipeline and **`cd property-video-app`** for the web app.
+
+---
+
+## Application — `planv6` progress (`property-video-app/`)
+
+Implemented from **`docs/planv6.md`** (not the full plan):
+
+| Area | Status |
+|------|--------|
+| **Step 0** — Next.js app (TypeScript, App Router, Tailwind, `src/`, `@/*`) | Done |
+| **Phase 1** — `src/lib/db.ts` (`pg` Pool, `DATABASE_URL`, SSL in production) | Done |
+| **Phase 2** — `src/lib/boundary.ts` (`resolveBoundary`, `generateBoundingBox`) | Done |
+| **Phase 3** — `src/lib/property.ts` (`lookupProperty`, `getParcelById`), `GET /api/property/[id]`, `GET /api/parcel/[nlaObjectId]` | Done |
+| **Clerk** — `ClerkProvider`, `src/middleware.ts` (`auth.protect` on `/dashboard` + protected APIs including `/api/property`, `/api/parcel`, `/api/agent`, `/api/generate`, `/api/status`) | Done |
+| **Phase 8 (partial)** — `POST /api/agent/sync`, client layout that calls sync on dashboard load | Done |
+| **Phase 11 (partial)** — `/`, `/dashboard`, `/dashboard/generate` with `ParcelSelectModal`, `MapEditor` (Mapbox + MapboxDraw), dynamic map load | Done |
+| **Generate map — framing** — `src/lib/property.ts` adds **`frame_latitude` / `frame_longitude`** (`ST_PointOnSurface(boundary::geometry)` when `boundary` is set); **`GET /api/property/[id]`** and **`GET /api/parcel/[nlaObjectId]`** return them; **`MapEditor`** uses them for **`initialViewState`** so the camera centers **inside** the NLA polygon instead of relying only on ingest’s vertex-mean **`latitude` / `longitude`**. | Done |
+| **Generate map — boundary UX** — Custom Mapbox Draw **`simple_select`** (`src/lib/mapboxDrawSimpleSelectDrag.ts`): **drag the shaded interior** to translate the whole polygon; **draw styles** derived from `MapboxDraw.lib.theme` drop the default filter that hid **vertex handles** in `simple_select`, so **corner dots** stay usable without forcing `direct_select` on every body click. Instructions appear above the map on Generate. | Done |
+| **Env** — `property-video-app/.env.local.example` (aligns with plan §6.4) | Done |
+
+**Explicitly not implemented yet** (still per `planv6.md` only): `src/worker/*` (Mapbox/Cesium frame pipelines, FFmpeg, post-processing, branding scripts), **BullMQ + Redis** (`src/lib/queue.ts`, worker process), **Stripe** and webhooks, **DigitalOcean Spaces** uploads, `POST /api/generate` as a real queue job (currently **501** stub), **`GET /api/status/[jobId]`** as a real job tracker (currently a stub that returns **failed** / not configured — the generate UI’s SWR polling cannot reach a “complete” state from this alone), Cesium **coverage probe** / renderer selection as in Phase 4, profile UI beyond sync, download route, and the plan’s **⚠️ clarification** decisions (LUT vs curves, boundary style, music, etc.).
+
+**Run locally:** `cd property-video-app && npm install && cp .env.local.example .env.local` — set at minimum **`DATABASE_URL`** (as **`app_user`**), **Clerk** keys, **`NEXT_PUBLIC_MAPBOX_TOKEN`** (and `MAPBOX_TOKEN` when workers exist). **Clerk v6+** uses `<Show when="signed-in" />` (not `SignedIn` / `SignedOut`).
+
+**Next.js 16** may warn that **`middleware.ts`** is legacy in favor of **“proxy”**; follow **Next.js** migration when upgrading — Clerk can remain configured similarly.
 
 ---
 
@@ -195,21 +222,24 @@ Respect **rate limits** and **terms of use**.
 
 ---
 
-## Next steps after DB work (app repo)
+## Next steps after DB work (app)
 
-The Next.js app is **not** in this repo. After the pipeline and verification: set **`DATABASE_URL`** for **`app_user`**, then integrate or copy **`reference/databaseUpdate-step8/`** (API routes, parcel selection UI) per `databaseUpdate.md`. Smoke-test a multi-parcel LV (e.g. **`031B6W02067`**, many siblings in verification query *7G*) and a single-parcel LV.
+1. **Pipeline:** run fetch / ingest / parcel ingest / step 6 / `app_user` / grants as in **Pipeline order** above.
+2. **App:** `cd property-video-app`, configure **`.env.local`**, `npm run dev`, sign in with Clerk, open **`/dashboard/generate`**, smoke-test a multi-parcel LV (e.g. **`031B6W02067`**) and a single-parcel LV. **`reference/databaseUpdate-step8/`** is superseded in code by `property-video-app/`, but keep parity if you change DB lookup rules (`databaseUpdate.md` Step 8).
+3. **From `planv6.md`:** queue + worker (Phases 10, 14–15), subscription + generate route (12–14), or Mapbox-only renderer path before Cesium.
 
 ---
 
 ## Handoff checklist for a new agent / parallel chat
 
-1. Read **this file** and the relevant plan (`planv5.md` for app work, `databasePlanv2.md` for DB work).
+1. Read **this file** and the relevant plan (`planv6.md` / `planv5.md` for app work, `databasePlanv2.md` for DB work, **`property-video-app/`** for the current Next app).
 2. Do **not** open multi-megabyte JSON in the editor or paste into prompts.
 3. For DB changes: work from `database/*.sql`, `dataScraper/ingestToDatabase.js`, and `dataScraper/ingestParcels.js`; confirm target environment and secrets outside git.
 4. After structural or workflow changes, update **Last updated** and the **Changelog** below.
 
 ### Changelog
 
+- **2026-04-25:** **`property-video-app` + `planv6`:** Documented the in-repo Next.js app (`property-video-app/`), what is implemented vs still plan-only (worker, queue, Stripe, Spaces, clarifications), Clerk/Mapbox/DB handoff, updated snapshot and tables (no longer “app not in repo”), Next steps, and handoff pointer to `planv6.md`.
 - **2026-04-25:** **Context-loading-strategy (subagent cross-check):** `dataScraper` pipeline and `database` + `reference/databaseUpdate-step8` match this doc; `planv6.md` added to documentation index. Minor operational notes from scan: `ingestToDatabase.js` can leave a partial DB write if a batch fails mid-run (per-batch rollback, process may not exit non-zero); `package.json` `test` script is a placeholder.
 - **2026-04-25:** **ProjectSummary** — reference load **880,422** `properties` / **976,812** `property_parcels` / **96,390** sibling rows; **app_user** order (**`app_user.local.sql` →** grants); **verify** with **`psql`** only; gotchas for row-count mix-ups and full-load Step 6 math; **Next steps** pointer to `reference/databaseUpdate-step8/` and `app_user` `DATABASE_URL`.
 - **2026-04-25:** Documented **`databaseUpdate.md`** / **`property_parcels`** workflow: SQL files (`update_property_parcels_v1.sql`, step 6, grants, verify), **`npm run ingest-parcels`**, FK order (**`ingest` before `ingest-parcels`**), `reference/databaseUpdate-step8/`, validator parish normalization (Stop 4), and related gotchas (`psql` ellipsis, Step 6 coverage).
